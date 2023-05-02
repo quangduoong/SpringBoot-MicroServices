@@ -1,9 +1,11 @@
 spring:
-    datasource:
-        driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://localhost:3306/spring-micro_inventory-service
-        username: root
-        password: pa55w0rd!
-    jpa:
-        hibernate:
-            ddlAuto: create-drop
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/spring-micro_inventory-service
+    username: root
+    password: pa55w0rd!
+  jpa:
+    hibernate:
+      ddlAuto: create-drop
+server:
+  port: 8082

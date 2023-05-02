@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -24,12 +23,12 @@ public class ProductServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ProductServiceApplication.class, args);
-        log.info("--> Application is running...");
+        log.info("Application is running...");
     }
 
 //    @Bean
     CommandLineRunner commandLineRunner() {
-        log.info("^_^ Product data seeding is started...");
+        log.info("Product data seeding is started...");
         return args -> {
             List<Product> productList = new ArrayList<>();
 
@@ -45,7 +44,7 @@ public class ProductServiceApplication {
 
             productRepository.saveAll(productList);
 
-            log.info("^_^ Seeding complete.");
+            log.info("Seeding complete.");
         };
     }
 

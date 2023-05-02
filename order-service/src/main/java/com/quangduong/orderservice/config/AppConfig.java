@@ -16,6 +16,12 @@ public class AppConfig {
     @RestControllerAdvice
     public static class AppExceptionHandler {
 
+        @ExceptionHandler(IllegalArgumentException.class)
+        @ResponseStatus(HttpStatus.BAD_REQUEST)
+        public String handleIllegalArg(IllegalArgumentException ex) {
+            return ex.getMessage();
+        }
+
         @ExceptionHandler(MethodArgumentNotValidException.class)
         @ResponseStatus(HttpStatus.BAD_REQUEST)
         public Map<String, String> handleInvalidArgs(MethodArgumentNotValidException ex) {
