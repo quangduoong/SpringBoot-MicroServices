@@ -26,10 +26,10 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderLineItemMapper mapper;
     private final OrderRepository repository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     public void placeOrder(OrderRequest orderRequest) {
-        String inventoryServiceUrl = "http://localhost:8082/api/v1/inventory";
+        String inventoryServiceUrl = "http://inventory-service/api/v1/inventory";
         List<OrderLineItem> orderLineItems = orderRequest.getOrderLineItems()
                 .stream()
                 .map(this.mapper::toOrderLineItem).toList();
@@ -43,14 +43,17 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderLineItems(orderLineItems);
         // Call Inventory Service to check stock quantity
         inventoryResponseList = List.of(
-                Objects.requireNonNull(this.webClient.get()
+                Objects.requireNonNull(this.webClientBuilder.build().get()
                         .uri(inventoryServiceUrl, uriBuilder -> uriBuilder.queryParam("sku-codes", skuCodes).build())
                         .retrieve()
                         .bodyToMono(InventoryResponse[].class)
                         .block()));
         // Check if any item is out of stock
         result = inventoryResponseList.stream().allMatch(InventoryResponse::getIsInStock);
-        if (!result) throw new IllegalArgumentException("Product is not in stock.");
+        if (!result) {
+            log.error("Implemented IllegalArgumentException was threw.");
+            throw new IllegalArgumentException("Some products is not in stock.");
+        }
         // Save order
         this.repository.save(order);
         log.info("Saved order.");

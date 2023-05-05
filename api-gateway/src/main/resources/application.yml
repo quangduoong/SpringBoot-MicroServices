@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: product-service
+          uri: lb://product-service
+          predicates:
+            - Path=/api/v1/product
+        - id: order-service
+          uri: lb://order-service
+          predicates:
+            - Path=/api/v1/order
+        - id: inventory-service
+          uri: lb://inventory-service
+          predicates:
+            - Path=/api/v1/inventory
+        - id: discovery-server
+          uri: http://localhost:8761
+          predicates:
+            - Path=/eureka/web # Path to access
+            - Path=/eureka/** # Get the static CSS files
+          filters:
+            - SetPath=/ # Set predicates to be identical to the original path
+#        - id: discovery-server-static
+#          uri: http://localhost:8761
+#          predicates:
+#            - Path=/eureka/**
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+server:
+  port: 8080
