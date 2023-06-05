@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/product")
 public class ProductController {
-    
+
     private final ProductService productService;
 
     @PostMapping
@@ -29,13 +29,13 @@ public class ProductController {
     public List<ProductResponse> findProducts(
             @RequestParam int page, @RequestParam int size, HttpServletResponse response) {
         Cookie cookie = new Cookie("username", "quangduong");
-        cookie.setMaxAge(60*60);
+        cookie.setMaxAge(60 * 60);
         response.addCookie(cookie);
         return productService.findProducts(page, size);
     }
 
     @GetMapping("/cookie-test")
-    public String cookieTest (@CookieValue(value = "username") String username){
+    public String cookieTest(@CookieValue(value = "username") String username) {
         return "Hello " + username;
     }
 }

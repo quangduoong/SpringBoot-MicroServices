@@ -28,7 +28,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository repository;
     private final WebClient.Builder webClientBuilder;
 
-    public void placeOrder(OrderRequest orderRequest) {
+    public String placeOrder(OrderRequest orderRequest) {
         String inventoryServiceUrl = "http://inventory-service/api/v1/inventory";
         List<OrderLineItem> orderLineItems = orderRequest.getOrderLineItems()
                 .stream()
@@ -37,6 +37,7 @@ public class OrderServiceImpl implements OrderService {
         List<InventoryResponse> inventoryResponseList;
         Order order = new Order();
         boolean result;
+        String msg = "";
 
         log.info("Placing order...");
         order.setOrderNumber(UUID.randomUUID().toString());
@@ -56,6 +57,8 @@ public class OrderServiceImpl implements OrderService {
         }
         // Save order
         this.repository.save(order);
-        log.info("Saved order.");
+        msg = "Saved order.";
+        log.info(msg);
+        return msg;
     }
 }
