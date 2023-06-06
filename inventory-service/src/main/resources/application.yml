@@ -1,6 +1,8 @@
 spring:
   application:
     name: inventory-service
+  zipkin:
+    base-url: http://localhost:9411
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/spring-micro_inventory-service
@@ -9,7 +11,10 @@ spring:
   jpa:
     hibernate:
       ddlAuto: validate
-
+management:
+  tracing:
+    sampling:
+      probability: 1.0
 eureka:
   client:
     serviceUrl:

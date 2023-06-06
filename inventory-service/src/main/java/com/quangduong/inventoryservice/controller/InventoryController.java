@@ -23,13 +23,8 @@ public class InventoryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    @SneakyThrows
     public List<InventoryResponse> isInStock(
             @RequestParam(value = "sku-codes") List<String> skuCodes) {
-        log.info("Wait for 10s.");
-        Thread.sleep(10000);
-        log.info("Wait ended.");
-
         List<InventoryResponse> inventoryResponses = new ArrayList<>();
 
         skuCodes.forEach(skuCode -> inventoryResponses.add(InventoryResponse.builder()

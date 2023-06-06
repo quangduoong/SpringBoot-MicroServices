@@ -5,6 +5,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 import com.quangduong.orderservice.dto.InventoryResponse;
+import com.quangduong.orderservice.event.OrderPlacedEvent;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderLineItemMapper mapper;
     private final OrderRepository repository;
     private final WebClient.Builder webClientBuilder;
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     public String placeOrder(OrderRequest orderRequest) {
         String inventoryServiceUrl = "http://inventory-service/api/v1/inventory";
@@ -52,12 +55,14 @@ public class OrderServiceImpl implements OrderService {
         // Check if any item is out of stock
         result = inventoryResponseList.stream().allMatch(InventoryResponse::getIsInStock);
         if (!result) {
+            kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
+
             log.error("Implemented IllegalArgumentException was threw.");
             throw new IllegalArgumentException("Some products is not in stock.");
         }
         // Save order
         this.repository.save(order);
-        msg = "Saved order.";
+        msg = "Placed order.";
         log.info(msg);
         return msg;
     }

@@ -3,15 +3,14 @@ package com.quangduong.productservice;
 import com.github.javafaker.Faker;
 import com.quangduong.productservice.model.Product;
 import com.quangduong.productservice.repository.ProductRepository;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 @Slf4j
